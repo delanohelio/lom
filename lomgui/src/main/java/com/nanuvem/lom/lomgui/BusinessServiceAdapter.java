@@ -12,7 +12,8 @@ import org.codehaus.jackson.node.ObjectNode;
 
 @Path("/data")
 public class BusinessServiceAdapter {
-
+	
+	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/class")
@@ -39,6 +40,28 @@ public class BusinessServiceAdapter {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/class/{fullName}/instances")
 	public String getInstances(@PathParam("fullName") String fullName) {
+		return clientes().toString();
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/class/{fullName}/instance/{id}")
+	public String getInstance(@PathParam("fullName") String fullName, @PathParam("id") Integer id) {
+		ObjectNode result = JsonNodeFactory.instance.objectNode();
+		
+		ObjectNode clientes = clientes();
+		ArrayNode instances = (ArrayNode) clientes.get("instances");
+		ObjectNode cliente = (ObjectNode) instances.get(id);
+		
+		ArrayNode instance = JsonNodeFactory.instance.arrayNode();
+		instance.add(cliente);
+		result.put("instance", cliente);
+		result.put("attributes", clientes.get("attributes"));
+		
+		return result.toString();
+	}
+	
+	private ObjectNode clientes(){
 		ObjectNode result = JsonNodeFactory.instance.objectNode();
 
 		ArrayNode attributesNode = JsonNodeFactory.instance.arrayNode();
@@ -54,7 +77,7 @@ public class BusinessServiceAdapter {
 		addInstance(instancesNode, 1, "Jose", "0000000", "12/12/12");
         addInstance(instancesNode, 2, "Maria", "1111111", "11/11/11");
         
-		return result.toString();
+        return result;
 	}
 
 	private void addAttributes(ArrayNode attributesNode, String name, String type) {

@@ -29,4 +29,14 @@ public class WidgetService {
 		String result = FileSystemUtil.getWidgetScript(servletRequest, "TableInstanceListing");
 		return Response.ok(result).build();
 	}
+	
+	
+	@GET
+	@Produces("text/plain; charset=utf-8")
+	@Path("/class/{fullName}/instance/{id}")
+	public Response getInstanceFormWidget(@PathParam("fullName") String fullName, @PathParam("id") Integer id) {
+		String result = FileSystemUtil.getWidgetScript(servletRequest, "FormInstanceWidget");
+		return Response.ok(result).build();
+	}
+	
 }
