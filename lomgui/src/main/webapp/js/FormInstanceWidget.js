@@ -13,15 +13,20 @@
     };
 
     FormInstanceWidget.prototype.drawInstance = function(jsonObj) {
-      var form;
+      var form,
+        _this = this;
       this.page = LOM.emptyPage();
       form = $("<form>");
       this.page.append(form);
       return $.each(jsonObj.attributes, function(i, attribute) {
-        form.append(attribute.name + ": ");
-        form.append($("<input name=attribute.name value=" + jsonObj.instance[attribute.name] + ">"));
-        return form.append("<br>");
+        return _this.drawAttribute(form, attribute, jsonObj.instance[attribute.name]);
       });
+    };
+
+    FormInstanceWidget.prototype.drawAttribute = function(form, attribute, value) {
+      form.append(attribute.name + ": ");
+      form.append($("<input name=" + attribute.name + " value=" + value + ">"));
+      return form.append("<br>");
     };
 
     return FormInstanceWidget;

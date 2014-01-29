@@ -22,5 +22,20 @@ public class ElementHelper {
 	
 		return driver.findElement(By.id(elementId));
 	}
+	
+	public static WebElement waitAndFindElementByName(WebDriver driver, final String name, int timeout) {
+		(new WebDriverWait(driver, timeout)).until(new ExpectedCondition<Boolean>() {
+			public Boolean apply(WebDriver driver) {
+				try {
+					driver.findElement(By.name(name));
+					return true;
+				} catch (Exception e) {
+					return false;
+				}
+			}
+		});
+	
+		return driver.findElement(By.name(name));
+	}
 
 }

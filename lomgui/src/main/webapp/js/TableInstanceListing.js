@@ -17,15 +17,16 @@
       this.page = LOM.emptyPage();
       table = $("<table>");
       this.page.append(table);
-      this.buildTableHead(jsonObj, table);
+      this.buildTableHead(jsonObj, table, classFullName);
       return this.buildTableBody(jsonObj, table, classFullName);
     };
 
-    TableInstanceListing.prototype.buildTableHead = function(jsonObj, table) {
+    TableInstanceListing.prototype.buildTableHead = function(jsonObj, table, classFullName) {
       var thead, trHead;
       thead = $("<thead>");
       table.append(thead);
       trHead = $("<tr>");
+      trHead.attr("id", classFullName + "_attributes");
       thead.append(trHead);
       return $.each(jsonObj.attributes, function(i, attribute) {
         var thHead;
@@ -42,6 +43,7 @@
       return $.each(jsonObj.instances, function(i, instance) {
         var trbody;
         trbody = $("<tr>");
+        trbody.attr("id", classFullName + "_" + instance.id);
         tbody.append(trbody);
         $.each(jsonObj.attributes, function(i, attribute) {
           var td;

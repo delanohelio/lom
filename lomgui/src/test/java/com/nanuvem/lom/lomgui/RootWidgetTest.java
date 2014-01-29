@@ -12,8 +12,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class RootWidgetTest {
 
+	private static final int DEFAULT_TIMEOUT = 5;
 	private WebDriver driver;
-
 	@Before
 	public void setUp() {
 		driver = new FirefoxDriver();
@@ -25,13 +25,25 @@ public class RootWidgetTest {
 	}
 
 	@Test
-	public void mockScenario() {
+	public void mockScenarioRootWidget() {
 		driver.get("http://localhost:8080/lomgui/");
 
-		WebElement clientLi = ElementHelper.waitAndFindElementById(driver, "class_Cliente", 10);
+		WebElement clientLi = ElementHelper.waitAndFindElementById(driver, "class_Cliente", DEFAULT_TIMEOUT);
 
 		assertNotNull("Client Class not found", clientLi);
 		assertEquals("Cliente", clientLi.getText());
+	}
+	
+	@Test
+	public void mockScenarioClassListingWidget() {
+		driver.get("http://localhost:8080/lomgui/");
+
+		WebElement clientLi = ElementHelper.waitAndFindElementById(driver, "class_Cliente", DEFAULT_TIMEOUT);
+		clientLi.click();
+		WebElement instanceTr = ElementHelper.waitAndFindElementById(driver, "Cliente_attributes", DEFAULT_TIMEOUT);
+
+		assertNotNull("Client Instance not found", instanceTr);
+		assertEquals("Jose", instanceTr.getText());
 	}
 
 }
