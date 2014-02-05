@@ -1,39 +1,44 @@
 class TableInstanceListing
 
 	init: (conf) ->
-		LOM.getJSON "rest/data/class/#{conf.classFullName}/instances", (jsonObj) =>
-			@drawTable(jsonObj, conf.classFullName)
+		LOM.getJSON "rest/data/class/#{conf.classFullName}/attributes", (attributes) =>
+			@drawTable(attributes, conf.classFullName)
 
-	drawTable: (jsonObj, classFullName) ->
+
+	drawTable: (attributesJson, classFullName) ->
 		@page = LOM.emptyPage()
 		table = $("<table>")
 		@page.append table
-		@buildTableHead(jsonObj, table, classFullName)
-		@buildTableBody(jsonObj, table, classFullName)
+		@buildTableHead(attributesJson, table, classFullName);
+		LOM.getJSON "rest/data/class/#{classFullName}/instances", (instances) =>
+			@buildTableBody(instances, attributesJson, table, classFullName)
 
-	buildTableHead: (jsonObj, table, classFullName) ->
+
+	buildTableHead: (attributesJson, table, classFullName) ->
 		thead = $("<thead>");
 		table.append thead
 		trHead = $("<tr>");
 		trHead.attr "id", classFullName + "_attributes"
 		thead.append trHead
-		$.each jsonObj.attributes, (i, attribute) ->
+		$.each attributesJson, (i, attribute) ->
 			thHead = $("<th>#{attribute.name}</th>")
 			trHead.append thHead
 
-	buildTableBody: (jsonObj, table, classFullName) ->
+
+	buildTableBody: (instancesJson, attributesJson, table, classFullName) ->
 		tbody = $("<tbody>");
 		table.append tbody
-		$.each jsonObj.instances, (i, instance) =>
+		instancesJson.forEach (instance) =>
 			trbody = $("<tr>")
 			trbody.attr "id", classFullName + "_" + instance.id
 			tbody.append trbody
-			$.each jsonObj.attributes, (i, attribute) =>
+			attributesJson.forEach (attribute) =>
 				td  = $("<td>#{instance[attribute.name]}</td>" );
 				trbody.append td
 			trbody.click => 
-				LOM.loadScript 'rest/widget/class/'+ classFullName + '/instance/' + i,
+				LOM.loadScript 'rest/widget/class/' + classFullName + '/instance/' + instance.id,
 					classFullName: classFullName
-					id: i
+					id: instance.id
+
 
 return new TableInstanceListing

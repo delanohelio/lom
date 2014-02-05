@@ -7,19 +7,21 @@
 
     FormInstanceWidget.prototype.init = function(conf) {
       var _this = this;
-      return LOM.getJSON("rest/data/class/" + conf.classFullName + "/instance/" + conf.id, function(jsonObj) {
-        return _this.drawInstance(jsonObj);
+      return LOM.getJSON("rest/data/class/" + conf.classFullName + "/instance/" + conf.id, function(instance) {
+        return _this.drawInstance(instance, conf.classFullName);
       });
     };
 
-    FormInstanceWidget.prototype.drawInstance = function(jsonObj) {
+    FormInstanceWidget.prototype.drawInstance = function(instance, classFullName) {
       var form,
         _this = this;
       this.page = LOM.emptyPage();
       form = $("<form>");
       this.page.append(form);
-      return $.each(jsonObj.attributes, function(i, attribute) {
-        return _this.drawAttribute(form, attribute, jsonObj.instance[attribute.name]);
+      return LOM.getJSON("rest/data/class/" + classFullName + "/attributes", function(attributes) {
+        return attributes.forEach(function(attribute) {
+          return _this.drawAttribute(form, attribute, instance[attribute.name]);
+        });
       });
     };
 

@@ -1,15 +1,16 @@
 class FormInstanceWidget
 
 	init: (conf) ->
-		LOM.getJSON "rest/data/class/#{conf.classFullName}/instance/#{conf.id}", (jsonObj) =>
-			@drawInstance(jsonObj)
+		LOM.getJSON "rest/data/class/#{conf.classFullName}/instance/#{conf.id}", (instance) =>
+			@drawInstance(instance, conf.classFullName)
 
-	drawInstance: (jsonObj) ->
+	drawInstance: (instance, classFullName) ->
 		@page = LOM.emptyPage()
 		form = $("<form>")
 		@page.append form
-		$.each jsonObj.attributes, (i, attribute) =>
-			@drawAttribute(form, attribute, jsonObj.instance[attribute.name])
+		LOM.getJSON "rest/data/class/#{classFullName}/attributes", (attributes) =>
+			attributes.forEach (attribute) =>
+				@drawAttribute(form, attribute, instance[attribute.name])
 
 
 	drawAttribute: (form, attribute, value) ->
