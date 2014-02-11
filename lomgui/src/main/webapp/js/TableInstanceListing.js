@@ -31,7 +31,7 @@
       trHead = $("<tr>");
       trHead.attr("id", classFullName + "_attributes");
       thead.append(trHead);
-      return $.each(attributesJson, function(i, attribute) {
+      return attributesJson.forEach(function(attribute) {
         var thHead;
         thHead = $("<th>" + attribute.name + "</th>");
         return trHead.append(thHead);
@@ -41,25 +41,29 @@
     TableInstanceListing.prototype.buildTableBody = function(instancesJson, attributesJson, table, classFullName) {
       var tbody,
         _this = this;
-      tbody = $("<tbody>");
-      table.append(tbody);
-      return instancesJson.forEach(function(instance) {
-        var trbody;
-        trbody = $("<tr>");
-        trbody.attr("id", classFullName + "_" + instance.id);
-        tbody.append(trbody);
-        attributesJson.forEach(function(attribute) {
-          var td;
-          td = $("<td>" + instance[attribute.name] + "</td>");
-          return trbody.append(td);
-        });
-        return trbody.click(function() {
-          return LOM.loadScript('rest/widget/class/' + classFullName + '/instance/' + instance.id, {
-            classFullName: classFullName,
-            id: instance.id
+      if (instancesJson.length > 0) {
+        tbody = $("<tbody>");
+        table.append(tbody);
+        return instancesJson.forEach(function(instance) {
+          var trbody;
+          trbody = $("<tr>");
+          trbody.attr("id", classFullName + "_" + instance.id);
+          tbody.append(trbody);
+          attributesJson.forEach(function(attribute) {
+            var td;
+            td = $("<td>" + instance[attribute.name] + "</td>");
+            return trbody.append(td);
+          });
+          return trbody.click(function() {
+            return LOM.loadScript('rest/widget/class/' + classFullName + '/instance/' + instance.id, {
+              classFullName: classFullName,
+              id: instance.id
+            });
           });
         });
-      });
+      } else {
+        return table.append("Nenhuma instância!");
+      }
     };
 
     return TableInstanceListing;

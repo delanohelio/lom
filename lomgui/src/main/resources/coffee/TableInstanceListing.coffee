@@ -20,25 +20,28 @@ class TableInstanceListing
 		trHead = $("<tr>");
 		trHead.attr "id", classFullName + "_attributes"
 		thead.append trHead
-		$.each attributesJson, (i, attribute) ->
+		attributesJson.forEach (attribute) ->
 			thHead = $("<th>#{attribute.name}</th>")
 			trHead.append thHead
 
 
 	buildTableBody: (instancesJson, attributesJson, table, classFullName) ->
-		tbody = $("<tbody>");
-		table.append tbody
-		instancesJson.forEach (instance) =>
-			trbody = $("<tr>")
-			trbody.attr "id", classFullName + "_" + instance.id
-			tbody.append trbody
-			attributesJson.forEach (attribute) =>
-				td  = $("<td>#{instance[attribute.name]}</td>" );
-				trbody.append td
-			trbody.click => 
-				LOM.loadScript 'rest/widget/class/' + classFullName + '/instance/' + instance.id,
-					classFullName: classFullName
-					id: instance.id
+		if(instancesJson.length > 0)
+			tbody = $("<tbody>");
+			table.append tbody
+			instancesJson.forEach (instance) =>
+				trbody = $("<tr>")
+				trbody.attr "id", classFullName + "_" + instance.id
+				tbody.append trbody
+				attributesJson.forEach (attribute) =>
+					td  = $("<td>#{instance[attribute.name]}</td>" );
+					trbody.append td
+				trbody.click => 
+					LOM.loadScript 'rest/widget/class/' + classFullName + '/instance/' + instance.id,
+						classFullName: classFullName
+						id: instance.id
+		else
+			table.append "Nenhuma instância!"
 
 
 return new TableInstanceListing
