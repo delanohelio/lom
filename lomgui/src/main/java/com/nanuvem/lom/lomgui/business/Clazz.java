@@ -180,6 +180,8 @@ public class Clazz {
 		classNode.put("name", getName());
 		classNode.put("namespace", "");
 		classNode.put("fullName", getFullName());
+		classNode.put("instances", instances.size());
+		classNode.put("attributes", attributes.size());
 		return classNode;
 	}
 

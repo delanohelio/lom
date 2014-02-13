@@ -17,6 +17,7 @@
         _this = this;
       this.page = LOM.emptyPage();
       form = $("<form>");
+      form.attr("id", "instance_" + instance.id);
       this.page.append(form);
       return LOM.getJSON("rest/data/class/" + classFullName + "/attributes", function(attributes) {
         return attributes.forEach(function(attribute) {
@@ -25,9 +26,14 @@
       });
     };
 
-    FormInstanceWidget.prototype.drawAttribute = function(form, attribute, value) {
+    FormInstanceWidget.prototype.drawAttribute = function(form, attribute, value, classFullName) {
+      var input;
       form.append(attribute.name + ": ");
-      form.append($("<input name=" + attribute.name + " value=" + value + ">"));
+      input = $("<input>");
+      input.attr("id", "attribute_" + attribute.id);
+      input.attr("name", attribute.name);
+      input.attr("value", value);
+      form.append(input);
       return form.append("<br>");
     };
 
