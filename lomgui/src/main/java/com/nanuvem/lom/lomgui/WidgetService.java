@@ -45,7 +45,7 @@ public class WidgetService {
 	
 	@POST
 	@Path("/class")
-	public Response setDefaultClassWidget(@PathParam("fullName") String fullName, String widgetName) {
+	public Response setDefaultClassWidget(String widgetName) {
 		String key = "class";
 		WidgetStoreFacade.getInstance().widgetsMapping.put(key, widgetName);
 		return Response.ok().build();

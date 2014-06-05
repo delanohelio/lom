@@ -73,7 +73,7 @@ public class Clazz {
 	}
 
 	public String getFullName() {
-		if (namespace != null) {
+		if (namespace != null && !namespace.isEmpty()) {
 			return getNamespace() + "." + getName();
 		}
 		return getName();

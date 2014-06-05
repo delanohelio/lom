@@ -21,7 +21,7 @@ public class LomBusinessFacade {
 	
 	private LomBusinessFacade() {
 		this.classes = new HashMap<Long, Clazz>();
-		this.mock();
+//		this.mock();
 	}
 
 	private void mock() {
